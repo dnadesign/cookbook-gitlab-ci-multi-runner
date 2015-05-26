@@ -9,4 +9,4 @@ version          '0.1.0'
 depends 'packagecloud', '~> 0.0.18'
 recommends 'docker'
 
-recommends 'gitlab-omnibus'
+# recommends 'gitlab-omnibus'
