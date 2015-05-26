@@ -5,3 +5,8 @@ license          'Apache 2.0'
 description      'Installs/Configures gitlab-ci-multi-runner'
 long_description 'Installs/Configures gitlab-ci-multi-runner'
 version          '0.1.0'
+
+depends 'packagecloud', '~> 0.0.18'
+recommends 'docker'
+
+recommends 'gitlab-omnibus'

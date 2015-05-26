@@ -1,4 +1,4 @@
-# gitlab-ci-multi-runner-cookbook
+# gitlab-ci-multi-runner cookbook
 
 TODO: Enter the cookbook description here.
 
