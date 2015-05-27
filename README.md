@@ -1,41 +1,57 @@
 # gitlab-ci-multi-runner cookbook
 
-TODO: Enter the cookbook description here.
+LWRP based cookbook to install and manage instance with gitlab-ci-multi-runner
 
 ## Supported Platforms
 
-TODO: List your supported platforms.
-
-## Attributes
-
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['gitlab-ci-multi-runner']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+* debian
+* ubuntu
+* centos
+* redhat
+* amazon
+* scientific
+* fedora
 
 ## Usage
 
-### gitlab-ci-multi-runner::default
+Include this cookbook as a dependency in the metadata of your own cookbook.
+It has no recipes, so do not include it in the run_list directly.
 
-Include `gitlab-ci-multi-runner` in your node's `run_list`:
+### my_gitlab_wrapper_cookbook::default
 
-```json
-{
-  "run_list": [
-    "recipe[gitlab-ci-multi-runner::default]"
-  ]
-}
+```ruby
+# my_gitlab_wrapper_cookbook/recipes/default.rb
+
+# Install the gitlab-ci-multi-runner package
+gitlab_ci_multi_runner 'gitlab-ci-multi-runner' do
+  version "0.3.3"
+  action [:install, :enable]
+end
+
+# Setup some runners
+node.set['gitlab-ci-multi-runner']['ci_url'] = 'http://localhost:3000/ci'
+node.set['gitlab-ci-multi-runner']['registration_token'] = 'deadbeef'
+
+# A runner that will run CI tests inside a docker instance, with postgresql docker instance attached
+gitlab_ci_runner 'ruby-2.2' do
+  executor 'docker'
+  docker_options({
+    'image' => 'library/ruby:2.2',
+    'postgresql' => '9.2'
+  })
+  tags ['ruby', 'postgresql']
+end
+
+# A runner that will run CI tests on the host machine
+gitlab_ci_runner 'local' do
+  executor 'shell'
+end
+
 ```
+
+## Dependencies
+
+This cookbook requires that you already have Gitlab CI installed, as you need to provide a gitlab CI url, and runner registration token. For more info, see my gitlab-omnibus cookbook.
 
 ## License and Authors
 
