@@ -1,6 +1,6 @@
 require_relative '../spec_helper'
 
-describe 'gitlab-ci-multi-runner LWRP' do
+describe 'gitlab_ci_multi_runner LWRP' do
   let(:chef_run) { ChefSpec::SoloRunner.converge('multirunner_test::default') }
 
   it 'installs gitlab-ci-multi-runner package' do

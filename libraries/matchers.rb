@@ -1,4 +1,7 @@
 if defined?(ChefSpec)
+  ChefSpec.define_matcher :gitlab_ci_multi_runner
+  ChefSpec.define_matcher :gitlab_ci_runner
+
   def install_gitlab_ci_multi_runner(resource_name)
     ChefSpec::Matchers::ResourceMatcher.new(:gitlab_ci_multi_runner, :install, resource_name)
   end

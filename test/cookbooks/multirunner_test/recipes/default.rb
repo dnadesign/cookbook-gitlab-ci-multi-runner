@@ -1,4 +1,4 @@
-gitlab_ci_multi_runner do
+gitlab_ci_multi_runner 'gitlab-ci-multi-runner' do
   version "0.3.3"
-  actions [:install, :enable]
+  action [:install, :enable]
 end
