@@ -17,6 +17,15 @@ class Chef
       attribute :parallels_vm, :kind_of => String
 
       attribute :bin_command, :kind_of => String, :default => 'gitlab-ci-multi-runner'
+
+      def initialize(*args)
+        super(*args)
+        @resource_name = :gitlab_ci_runner
+
+        @ci_url ||= node['gitlab-ci-multi-runner']['ci_url'] if node['gitlab-ci-multi-runner']
+        @registration_token ||= node['gitlab-ci-multi-runner']['registration_token'] if node['gitlab-ci-multi-runner']
+      end
+
     end
   end
 end

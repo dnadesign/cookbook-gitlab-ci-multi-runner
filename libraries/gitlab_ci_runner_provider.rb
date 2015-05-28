@@ -60,17 +60,9 @@ class Chef
 
       private
 
-      def ci_url_value
-        new_resource.ci_url || (node['gitlab-ci-multi-runner']['ci_url'] if node['gitlab-ci-multi-runner'])
-      end
-
-      def registration_token_value
-        new_resource.registration_token || (node['gitlab-ci-multi-runner']['registration_token'] if node['gitlab-ci-multi-runner'])
-      end
-
       def build_registration_options
-        raise OptionValidationError, "gitlab_ci_runner needs ci_url parameter or node['gitlab-ci-multi-runner']['ci_url'] attribute set" unless ci_url_value
-        raise OptionValidationError, "gitlab_ci_runner needs registration_token parameter or node['gitlab-ci-multi-runner']['registration_token'] attribute set" unless registration_token_value
+        raise OptionValidationError, "gitlab_ci_runner needs ci_url parameter or node['gitlab-ci-multi-runner']['ci_url'] attribute set" unless new_resource.ci_url
+        raise OptionValidationError, "gitlab_ci_runner needs registration_token parameter or node['gitlab-ci-multi-runner']['registration_token'] attribute set" unless new_resource.registration_token
         docker_options = Mash.new(new_resource.docker_options)#.symbolize_keys!
         ssh_options = Mash.new(new_resource.ssh_options)#.symbolize_keys!
 

@@ -1,7 +1,12 @@
 require_relative '../spec_helper'
 
 describe 'gitlab_ci_runner LWRP' do
-  let(:chef_run) { ChefSpec::SoloRunner.new(step_into: ['gitlab_ci_runner']).converge('multirunner_test::runners') }
+  let(:chef_run) do
+    ChefSpec::SoloRunner.new(step_into: ['gitlab_ci_runner']) do |node|
+      node.set['gitlab-ci-multi-runner']['ci_url'] = 'http://localhost:3000/ci'
+      node.set['gitlab-ci-multi-runner']['registration_token'] = 'deadbeef'
+    end.converge('multirunner_test::runners')
+  end
   let(:runners) { ['ruby-1.9.3', 'ruby-2.1', 'local', 'coreos'] }
   before do
     runners.each do |runner_name|
@@ -20,6 +25,8 @@ describe 'gitlab_ci_runner LWRP' do
     expect(resource.bin_command).to eq('gitlab-ci-multi-runner')
     expect(resource.tags).to eq([])
     expect(resource.executor).to eq('shell')
+    expect(resource.registration_token).to eq('deadbeef')
+    expect(resource.ci_url).to eq('http://localhost:3000/ci')
   end
 
 end

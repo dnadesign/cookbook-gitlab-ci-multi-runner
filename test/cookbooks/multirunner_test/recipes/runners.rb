@@ -1,6 +1,3 @@
-node.set['gitlab-ci-multi-runner']['ci_url'] = 'http://localhost:3000/ci'
-node.set['gitlab-ci-multi-runner']['registration_token'] = 'deadbeef'
-
 gitlab_ci_runner 'ruby-1.9.3' do
   executor 'docker'
   docker_options({
