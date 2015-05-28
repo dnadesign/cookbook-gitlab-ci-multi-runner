@@ -1,5 +1,7 @@
 # gitlab-ci-multi-runner cookbook
 
+[![Circle CI](https://circleci.com/gh/dnadesign/cookbook-gitlab-ci-multi-runner.svg?style=svg)](https://circleci.com/gh/dnadesign/cookbook-gitlab-ci-multi-runner)
+
 LWRP based cookbook to install and manage instance with gitlab-ci-multi-runner
 
 ## Supported Platforms

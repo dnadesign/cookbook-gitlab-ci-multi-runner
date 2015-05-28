@@ -1,6 +1,6 @@
 name             'gitlab-ci-multi-runner'
-maintainer       'Jeremy Olliver'
-maintainer_email 'jeremy.olliver@gmail.com'
+maintainer       'DNA Dev'
+maintainer_email 'dev@dna.co.nz'
 license          'Apache 2.0'
 description      'Installs/Configures gitlab-ci-multi-runner'
 long_description 'Installs/Configures gitlab-ci-multi-runner'
