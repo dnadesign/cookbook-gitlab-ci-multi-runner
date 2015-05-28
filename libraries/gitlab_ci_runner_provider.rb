@@ -71,32 +71,32 @@ class Chef
       def build_registration_options
         raise OptionValidationError, "gitlab_ci_runner needs ci_url parameter or node['gitlab-ci-multi-runner']['ci_url'] attribute set" unless ci_url_value
         raise OptionValidationError, "gitlab_ci_runner needs registration_token parameter or node['gitlab-ci-multi-runner']['registration_token'] attribute set" unless registration_token_value
-        new_resource.docker_options.symbolize_keys!
-        new_resource.ssh_options.symbolize_keys!
+        docker_options = Mash.new(new_resource.docker_options)#.symbolize_keys!
+        ssh_options = Mash.new(new_resource.ssh_options)#.symbolize_keys!
 
         options =  "-n -r '#{new_resource.registration_token}' -u '#{new_resource.ci_url}'"
         options += " -d '#{new_resource.description}'" if new_resource.description
         options += " -t '#{new_resource.tags.join(' ')}'" if new_resource.tags.any?
         options += " -e #{new_resource.executor}"
         if new_resource.executor == 'docker'
-          raise OptionValidationError, "gitlab_ci_runner must specify docker_options: {image: 'foo/bar'} when using executor: 'docker'" unless new_resource.docker_options[:image]
-          options += " --docker-image = '#{new_resource.docker_options[:image]}'"
-          options += " --docker-privileged = #{new_resource.docker_options[:privileged]}" unless new_resource.docker_options[:privileged].nil?
-          options += " --docker-mysql = '#{new_resource.docker_options[:mysql]}'" if new_resource.docker_options[:mysql]
-          options += " --docker-postgres = '#{new_resource.docker_options[:postgres]}'" if new_resource.docker_options[:postgres]
-          options += " --docker-mongo = '#{new_resource.docker_options[:mongo]}'" if new_resource.docker_options[:mongo]
-          options += " --docker-redis = '#{new_resource.docker_options[:redis]}'" if new_resource.docker_options[:redis]
+          raise OptionValidationError, "gitlab_ci_runner must specify docker_options: {image: 'foo/bar'} when using executor: 'docker'" unless docker_options[:image]
+          options += " --docker-image = '#{docker_options[:image]}'"
+          options += " --docker-privileged = #{docker_options[:privileged]}" unless docker_options[:privileged].nil?
+          options += " --docker-mysql = '#{docker_options[:mysql]}'" if docker_options[:mysql]
+          options += " --docker-postgres = '#{docker_options[:postgres]}'" if docker_options[:postgres]
+          options += " --docker-mongo = '#{docker_options[:mongo]}'" if docker_options[:mongo]
+          options += " --docker-redis = '#{docker_options[:redis]}'" if docker_options[:redis]
         end
         if new_resource.executor == 'parallels'
           raise OptionValidationError, "gitlab_ci_runner must specify parallels_vm when using executor: 'paralells'"
           options += " --parallels-vm = '#{new_resource.parallels_vm}'"
         end
         if new_resource.executor == 'ssh'
-          raise OptionValidationError, "gitlab_ci_runner must specify ssh_options: {host: 'example.com'} when using executor: 'ssh'" unless new_resource.ssh_options[:host]
-          options += " --ssh-host = '#{new_resource.ssh_options[:host]}'"
-          options += " --ssh-port = '#{new_resource.ssh_options[:port]}'" if new_resource.ssh_options[:port]
-          options += " --ssh-user = '#{new_resource.ssh_options[:user]}'" if new_resource.ssh_options[:user]
-          options += " --ssh-password = '#{new_resource.ssh_options[:password]}'" if new_resource.ssh_options[:password]
+          raise OptionValidationError, "gitlab_ci_runner must specify ssh_options: {host: 'example.com'} when using executor: 'ssh'" unless ssh_options[:host]
+          options += " --ssh-host = '#{ssh_options[:host]}'"
+          options += " --ssh-port = '#{ssh_options[:port]}'" if ssh_options[:port]
+          options += " --ssh-user = '#{ssh_options[:user]}'" if ssh_options[:user]
+          options += " --ssh-password = '#{ssh_options[:password]}'" if ssh_options[:password]
         end
         options += " #{new_resource.name}"
 
